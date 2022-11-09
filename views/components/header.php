@@ -36,7 +36,7 @@
                         if (isset($_SESSION['user'])) {
                             echo "
                             <li class='nav-item d-flex align-items-center'>
-                                {$_SESSION['user']['username']}
+                                Welcome, {$_SESSION['user']['username']}
                             </li>
                             <li class='nav-item'>
                                 <a class='nav-link' href='/services/logout.php'>Log Out</a>

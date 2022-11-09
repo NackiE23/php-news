@@ -9,16 +9,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password_confirm = $_POST['password_confirm'];
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-    $sql = "INSERT INTO users (email, username, password) VALUES ('$email', '$username', '$hashed_password')";
-    $res = $db->exec($sql);
-
     if ($password === $password_confirm) {
+        $sql = "INSERT INTO users (email, username, password) VALUES ('$email', '$username', '$hashed_password')";
+        $res = $db->exec($sql);
+
+        $errorMsg = $db->lastErrorMsg();
 
         if ($res) {
-            $_SESSION['message'] = ["category" => "success", "text" => "You successfuly registered!"];
+            $_SESSION['message'] = ["category" => "success", "text" => "You successfuly registered! Log in please"];
             header('Location: ../views/login.php');
         } else {
-            $_SESSION['message'] = ["category" => "danger", "text" => "User with this email already exists! $sql"];
+            $_SESSION['message'] = ["category" => "danger", "text" => "SQLite Error - $errorMsg"];
             header('Location: ../views/register.php');
         }
     } else {
