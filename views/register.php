@@ -6,7 +6,7 @@
 <h1>Register panel</h1>
 
 <div class="container">
-    <form method="POST" action="../services/register.php" enctype="multipart/form-data">
+    <form method="POST" action="../services/register.php">
         <div class="mb-3 row">
             <label for="email" class="col-sm-2 col-form-label">Email: </label>
             <div class="col-sm-10">
