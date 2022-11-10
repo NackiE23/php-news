@@ -5,18 +5,8 @@
 
 <h1>News</h1>
 
-<ul> USERS
-    <?php
-    $sql = "SELECT * FROM users";
-    $responce = $db->query($sql);
-    while ($result = $responce->fetchArray(SQLITE3_ASSOC)) {
-        echo "<li>{$result['id']}, {$result['email']}, {$result['username']}, {$result['password']}</li>";
-    }
-    ?>
-</ul>
-
 <?php
-$sql = "SELECT news.created, news.title, news.main_text, users.username FROM news JOIN users ON news.user_id == users.id";
+$sql = "SELECT news.created, news.title, news.main_text, users.username FROM news JOIN users ON news.user_id == users.id ORDER BY news.created DESC";
 $responce = $db->query($sql);
 while ($result = $responce->fetchArray(SQLITE3_ASSOC)) {
     echo "
@@ -29,7 +19,7 @@ while ($result = $responce->fetchArray(SQLITE3_ASSOC)) {
                 <p>Posted by {$result['username']} at {$result['created']}</p>
             </div>
             <div class='row'>
-                <p>It is very dangerous</p>
+                <p>{$result['main_text']}</p>
             </div>
         </div>
     </div>

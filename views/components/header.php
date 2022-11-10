@@ -30,6 +30,19 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
             </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup" style="margin-right: 20px;">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <?php
+                    if (isset($_SESSION['user'])) {
+                        echo "
+                        <li class='nav-item'>
+                            <a class='nav-link' href='/views/add_news.php'>Add news</a>
+                        </li>
+                        ";
+                    }
+                    ?>
+               </ul>
+            </div>
             <div class="d-flex">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <?php
