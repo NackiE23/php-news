@@ -30,21 +30,69 @@ if (isset($_GET['id'])) {
 ?>
 
 <div class="container">
-    <h1 class="d-flex justify-content-center">
-        <?php
+    <!-- News Title -->
+    <?php
+        if ($_GET['change_title']) {
+            echo "<p>
+            <form method='POST' action='../services/change_news.php'>
+                <input type='hidden' name='news_id' value={$news['id']}>
+                <div class='d-flex justify-content-between'>
+                    <div class='form-floating flex-grow-1 me-2'>
+                      <input class='form-control bg-secondary text-light' name='new_title' placeholder='New Title' id='floatingInput' value=\"{$news['title']}\">
+                      <label for='floatingInput'>New Title</label>
+                    </div>
+
+                    <input type='submit' class='btn btn-secondary' value='Change'>
+                    <a class='btn btn-secondary ms-2 d-flex align-items-center' href='?id=$news_id'>Cancel</a>
+                </div>
+            </form></p>
+            ";
+        } else {
+            echo '<h1 class="d-flex justify-content-center">';
             echo $news['title'];
             if ($is_owner) {
                 echo "
+                <a class='btn btn-secondary ms-2 d-flex align-self-end' href='?id=$news_id&change_title=1'>Change title</a>
                 <form class='ms-2' action='../services/delete_news.php' method='POST'>
                     <input type='hidden' name='news_id' value=$news_id>
                     <button class='btn btn-danger' type='submit'>Delete this news</button>
                 </form>
                 ";
             }
+            echo '</h1>';
+        }
+    ?>
+    <!-- News Created -->
+    <p>
+        Posted by <?= $news['username'] ?> at <?= $news['created'] ?>
+    </p>
+    <!-- News Main text -->
+    <p>
+        <?php
+            if ($_GET['change_main_text']) {
+                echo "
+                <form method='POST' action='../services/change_news.php'>
+                    <input type='hidden' name='news_id' value={$news['id']}>
+                    <div class='d-flex justify-content-between'>
+                        <div class='form-floating flex-grow-1 me-2'>
+                            <textarea class='form-control bg-secondary text-light' name='new_main_text' placeholder='New Main Text' id='floatingTextarea' style='min-height: 250px;'>{$news['main_text']}</textarea>
+                            <label for='floatingTextarea'>New Main Text</label>
+                        </div>
+
+                        <input type='submit' class='btn btn-secondary' value='Change'>
+                        <a class='btn btn-secondary ms-2 d-flex align-items-center' href='?id=$news_id'>Cancel</a>
+                    </div>
+                </form>
+                ";
+            } else {
+                echo $news['main_text'];
+                if ($is_owner) {
+                    echo "<a class='btn btn-secondary ms-2 d-flex justify-content-center' href='?id=$news_id&change_main_text=1'>Change main text</a>";
+                }
+            }
         ?>
-    </h1>
-    <p>Posted by <?= $news['username'] ?> at <?= $news['created'] ?></p>
-    <p><?= $news['main_text'] ?></p>
+    </p>
+    <!-- News Comments -->
     <hr>
     <h3>Comments</h3>
     <ul class="list-group list-group-flush mb-4">
@@ -56,13 +104,35 @@ if (isset($_GET['id'])) {
                         {$comment['username']}: {$comment['main_text']}";
 
                     if ($_SESSION['user']['id'] == $comment['user_id']) {
-                        echo "
-                        <form action='../services/delete_comment.php' method='POST'>
-                            <input type='hidden' name='news_id' value=$news_id>
-                            <input type='hidden' name='comment_id' value={$comment['id']}>
-                            <button class='btn btn-dark' type='submit'>Delete</button>
-                        </form>
-                        ";
+                        if ($_GET['change_comment'] == $comment['id']) {
+                            echo "
+                            <form method='POST' action='../services/change_comment.php'>
+                                <input type='hidden' name='news_id' value=$news_id>
+                                <input type='hidden' name='comment_id' value={$comment['id']}>
+                                <div class='d-flex justify-content-between'>
+                                    <div class='form-floating flex-grow-1 me-2'>
+                                      <input class='form-control bg-dark text-light' name='new_comment_text' placeholder='New Comment' id='floatingInput' value=\"{$comment['main_text']}\">
+                                      <label for='floatingInput' class='text-light'>New Comment</label>
+                                    </div>
+
+                                    <input type='submit' class='btn btn-dark' value='Change'>
+                                    <a class='btn btn-dark ms-2 d-flex align-items-center' href='?id=$news_id'>Cancel</a>
+                                </div>
+                            </form>
+                            ";
+                        } else {
+                            echo "
+                            <div class='d-flex justify-content-center'>
+                                <form action='../services/delete_comment.php' method='POST'>
+                                    <input type='hidden' name='news_id' value=$news_id>
+                                    <input type='hidden' name='comment_id' value={$comment['id']}>
+                                    <button class='btn btn-danger' type='submit'>Delete</button>
+                                </form>
+                                <a class='btn btn-dark ms-2 d-flex align-self-end' href='?id=$news_id&change_comment={$comment['id']}'>Change comment</a>
+                            </div>
+                            ";
+                        }
+
                     }
 
                     echo "</li>";
@@ -79,7 +149,7 @@ if (isset($_GET['id'])) {
                 <input type='hidden' name='user_id' value={$_SESSION['user']['id']}>
                 <input type='hidden' name='news_id' value={$news['id']}>
                 <div class='form-floating'>
-                  <textarea class='form-control bg-secondary mb-2' name='main_text' placeholder='Leave a comment here' id='floatingTextarea2' style='color: white'></textarea>
+                  <textarea class='form-control bg-secondary mb-2 text-light' name='main_text' placeholder='Leave a comment here' id='floatingTextarea2'></textarea>
                   <label for='floatingTextarea2'>Leave a comment here</label>
                 </div>
 
