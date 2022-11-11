@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $errorMsg = $db->lastErrorMsg();
 
     if ($res) {
-        $_SESSION['message'] = ["category" => "success", "text" => "Your news has changed!"];
+        $_SESSION['message'] = ["category" => "success", "text" => "News has changed!"];
     } else {
         $_SESSION['message'] = ["category" => "danger", "text" => "SQLite Error - $errorMsg"];
     }

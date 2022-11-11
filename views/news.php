@@ -50,7 +50,7 @@ if (isset($_GET['id'])) {
         } else {
             echo '<h1 class="d-flex justify-content-center">';
             echo $news['title'];
-            if ($is_owner) {
+            if ($is_owner || $_SESSION['user']['is_admin']) {
                 echo "
                 <a class='btn btn-secondary ms-2 d-flex align-self-end' href='?id=$news_id&change_title=1'>Change title</a>
                 <form class='ms-2' action='../services/delete_news.php' method='POST'>
@@ -86,7 +86,7 @@ if (isset($_GET['id'])) {
                 ";
             } else {
                 echo $news['main_text'];
-                if ($is_owner) {
+                if ($is_owner || $_SESSION['user']['is_admin']) {
                     echo "<a class='btn btn-secondary ms-2 d-flex justify-content-center' href='?id=$news_id&change_main_text=1'>Change main text</a>";
                 }
             }
@@ -103,7 +103,7 @@ if (isset($_GET['id'])) {
                     <li class='list-group-item bg-secondary mb-1'>
                         {$comment['username']}: {$comment['main_text']}";
 
-                    if ($_SESSION['user']['id'] == $comment['user_id']) {
+                    if ($_SESSION['user']['id'] == $comment['user_id'] || $_SESSION['user']['is_admin']) {
                         if ($_GET['change_comment'] == $comment['id']) {
                             echo "
                             <form method='POST' action='../services/change_comment.php'>
