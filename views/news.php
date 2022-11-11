@@ -1,9 +1,8 @@
 <?php
-session_start();
 require_once('../database/db_connection.php');
 require('components/header.php');
 
-if (isset($_GET['id'])) {
+if ($_GET['id']) {
     $news_id = $_GET['id'];
 
     $responce = $db->query("
@@ -14,7 +13,7 @@ if (isset($_GET['id'])) {
     ");
     $news = $responce->fetchArray(SQLITE3_ASSOC);
 
-    $is_owner = isset($_SESSION['user']) && $_SESSION['user']['id'] === $news['user_id'];
+    $is_owner = $_SESSION['user'] && $_SESSION['user']['id'] === $news['user_id'];
 
     $is_comments_exist = $db->querySingle("SELECT COUNT(*) as count FROM comments WHERE comments.news_id == $news_id");
     if ($is_comments_exist) {

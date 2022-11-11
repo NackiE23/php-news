@@ -33,10 +33,17 @@
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup" style="margin-right: 20px;">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <?php
-                    if (isset($_SESSION['user'])) {
+                    if ($_SESSION['user']) {
                         echo "
                         <li class='nav-item'>
                             <a class='nav-link' href='/views/add_news.php'>Add news</a>
+                        </li>
+                        ";
+                    }
+                    if ($_SESSION['user']['is_admin']) {
+                        echo "
+                        <li class='nav-item'>
+                            <a class='nav-link' href='/views/user_list.php'>Users</a>
                         </li>
                         ";
                     }
@@ -46,7 +53,7 @@
             <div class="d-flex">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <?php
-                        if (isset($_SESSION['user'])) {
+                        if ($_SESSION['user']) {
                             echo "
                             <li class='nav-item d-flex align-items-center'>
                                 Welcome, {$_SESSION['user']['username']}
